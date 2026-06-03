@@ -2,10 +2,11 @@ import React, { useState, useRef, useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import {
   Send,
   Bot,
@@ -25,6 +26,12 @@ import {
   Cpu,
   Database,
   Globe,
+  Menu,
+  X,
+  Hexagon,
+  Triangle,
+  Circle,
+  Square,
 } from "lucide-react";
 
 interface ChatMessage {
@@ -169,24 +176,136 @@ const HomePage: React.FC = () => {
     handleSend(inputValue);
   };
 
+  const NAV_ITEMS = [
+    { label: "关于我", href: "#about" },
+    { label: "作品", href: "#projects" },
+    { label: "数字分身", href: "#chat" },
+    { label: "联系我", href: "#contact" },
+  ];
+
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const scrollTo = (href: string) => {
+    const el = document.querySelector(href);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    setMobileOpen(false);
+  };
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      {/* 全局背景装饰 */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div className="absolute top-[5%] left-[8%] w-2 h-2 rounded-full bg-primary/15 animate-pulse" style={{ animationDuration: "4s" }} />
+        <div className="absolute top-[15%] right-[12%] w-1.5 h-1.5 rounded-full bg-primary/10 animate-pulse" style={{ animationDuration: "3s", animationDelay: "1s" }} />
+        <div className="absolute top-[35%] left-[5%] w-1 h-1 rounded-full bg-primary/20 animate-pulse" style={{ animationDuration: "5s", animationDelay: "2s" }} />
+        <div className="absolute top-[60%] right-[8%] w-2 h-2 rounded-full bg-primary/10 animate-pulse" style={{ animationDuration: "4.5s", animationDelay: "0.5s" }} />
+        <div className="absolute top-[80%] left-[15%] w-1.5 h-1.5 rounded-full bg-primary/15 animate-pulse" style={{ animationDuration: "3.5s", animationDelay: "1.5s" }} />
+        <div className="absolute top-[45%] right-[20%] w-1 h-1 rounded-full bg-primary/10 animate-pulse" style={{ animationDuration: "6s", animationDelay: "2.5s" }} />
+      </div>
+
+      {/* 导航栏 */}
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? "bg-background/80 backdrop-blur-xl shadow-sm border-b border-border/40"
+            : "bg-transparent"
+        }`}
+      >
+        <div className="max-w-3xl mx-auto px-4 md:px-6 h-14 flex items-center justify-between">
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            className="text-sm font-semibold text-foreground tracking-wide"
+          >
+            Leavis
+          </a>
+
+          {/* 桌面导航 */}
+          <nav className="hidden md:flex items-center gap-1">
+            {NAV_ITEMS.map((item) => (
+              <button
+                key={item.href}
+                onClick={() => scrollTo(item.href)}
+                className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted/50"
+              >
+                {item.label}
+              </button>
+            ))}
+          </nav>
+
+          {/* 移动端菜单 */}
+          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+            <SheetTrigger asChild className="md:hidden">
+              <Button variant="ghost" size="icon" className="h-9 w-9">
+                <Menu className="w-5 h-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-64 bg-background/95 backdrop-blur-xl border-border/40">
+              <div className="flex flex-col gap-1 mt-6">
+                {NAV_ITEMS.map((item) => (
+                  <SheetClose asChild key={item.href}>
+                    <button
+                      onClick={() => scrollTo(item.href)}
+                      className="w-full text-left px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg transition-colors"
+                    >
+                      {item.label}
+                    </button>
+                  </SheetClose>
+                ))}
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </header>
+
       {/* Hero Section */}
-      <section className="relative overflow-hidden">
+      <section className="relative overflow-hidden pt-14">
         {/* 装饰性背景元素 */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-          <div className="absolute top-[-10%] right-[-5%] w-[300px] h-[300px] md:w-[400px] md:h-[400px] rounded-full bg-primary/5 blur-3xl" />
-          <div className="absolute bottom-[-10%] left-[-5%] w-[250px] h-[250px] md:w-[350px] md:h-[350px] rounded-full bg-accent/10 blur-3xl" />
+          <div className="absolute top-[-10%] right-[-5%] w-[300px] h-[300px] md:w-[500px] md:h-[500px] rounded-full bg-primary/6 blur-3xl" />
+          <div className="absolute bottom-[-10%] left-[-5%] w-[250px] h-[250px] md:w-[400px] md:h-[400px] rounded-full bg-accent/8 blur-3xl" />
+          <div className="absolute top-[30%] left-[20%] w-[120px] h-[120px] md:w-[180px] md:h-[180px] rounded-full bg-secondary/10 blur-2xl" />
+
+          {/* 几何装饰 */}
+          <div className="absolute top-[20%] right-[15%] opacity-[0.07]">
+            <Hexagon className="w-8 h-8 text-primary" strokeWidth={1.5} />
+          </div>
+          <div className="absolute top-[60%] left-[10%] opacity-[0.06]">
+            <Triangle className="w-6 h-6 text-primary" strokeWidth={1.5} />
+          </div>
+          <div className="absolute bottom-[25%] right-[8%] opacity-[0.05]">
+            <Square className="w-5 h-5 text-primary" strokeWidth={1.5} />
+          </div>
+          <div className="absolute top-[40%] right-[25%] opacity-[0.06]">
+            <Circle className="w-4 h-4 text-primary" strokeWidth={1.5} />
+          </div>
         </div>
 
-        <div className="relative z-10 max-w-3xl mx-auto px-4 md:px-6 pt-12 pb-8 md:pt-20 md:pb-12">
+        <div className="relative z-10 max-w-3xl mx-auto px-4 md:px-6 pt-10 pb-8 md:pt-16 md:pb-12">
           <div className="flex flex-col items-center text-center">
-            <Avatar className="w-24 h-24 md:w-28 md:h-28 ring-4 ring-primary/20 shadow-lg">
-              <AvatarImage src={AVATAR_URL} alt="Leavis 的头像" />
-              <AvatarFallback className="bg-primary/10 text-primary text-2xl font-semibold">
-                LV
-              </AvatarFallback>
-            </Avatar>
+            <div className="relative">
+              <Avatar className="w-24 h-24 md:w-28 md:h-28 ring-4 ring-primary/20 shadow-xl shadow-primary/5">
+                <AvatarImage src={AVATAR_URL} alt="Leavis 的头像" />
+                <AvatarFallback className="bg-primary/10 text-primary text-2xl font-semibold">
+                  LV
+                </AvatarFallback>
+              </Avatar>
+              <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center border-2 border-background">
+                <Sparkles className="w-3 h-3 text-primary" />
+              </div>
+            </div>
 
             <h1 className="mt-6 text-2xl md:text-3xl font-semibold text-foreground text-balance">
               Leavis
@@ -196,28 +315,34 @@ const HomePage: React.FC = () => {
             </p>
 
             {/* 聊天入口引导 */}
-            <a
-              href="#chat"
-              className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary/10 text-primary text-sm font-medium hover:bg-primary/15 transition-colors border border-primary/20"
+            <button
+              onClick={() => scrollTo("#chat")}
+              className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary/10 text-primary text-sm font-medium hover:bg-primary/15 transition-all border border-primary/20 hover:shadow-md hover:shadow-primary/5 active:scale-95"
             >
               <Bot className="w-4 h-4" />
               和我聊聊
               <ArrowDown className="w-3.5 h-3.5" />
-            </a>
+            </button>
           </div>
         </div>
       </section>
-      <Separator className="max-w-3xl mx-auto" />
+
+      <div className="max-w-3xl mx-auto px-4 md:px-6">
+        <Separator />
+      </div>
+
       {/* About Section */}
-      <section className="max-w-3xl mx-auto px-4 md:px-6 py-8 md:py-12">
+      <section id="about" className="max-w-3xl mx-auto px-4 md:px-6 py-8 md:py-12 scroll-mt-20">
         <div className="flex items-center gap-2 mb-6">
-          <Sparkles className="w-5 h-5 text-primary" />
+          <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+            <Sparkles className="w-4 h-4 text-primary" />
+          </div>
           <h2 className="text-lg md:text-xl font-semibold text-foreground">关于我</h2>
         </div>
 
         <div className="grid gap-4">
           {/* 当前状态 */}
-          <Card className="bg-card/60 backdrop-blur-sm border-border/60">
+          <Card className="bg-card/60 backdrop-blur-sm border-border/60 hover:shadow-md hover:shadow-primary/5 hover:border-primary/20 transition-all">
             <CardContent className="p-5 md:p-6">
               <div className="flex items-start gap-4">
                 <div className="shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -236,13 +361,13 @@ const HomePage: React.FC = () => {
           </Card>
 
           {/* 兴趣 */}
-          <Card className="bg-card/60 backdrop-blur-sm border-border/60">
+          <Card className="bg-card/60 backdrop-blur-sm border-border/60 hover:shadow-md hover:shadow-primary/5 hover:border-primary/20 transition-all">
             <CardContent className="p-5 md:p-6">
               <div className="flex items-start gap-4">
                 <div className="shrink-0 w-10 h-10 rounded-lg bg-secondary/50 flex items-center justify-center">
                   <Lightbulb className="w-5 h-5 text-foreground/70" />
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   <h3 className="text-sm font-medium text-muted-foreground mb-2">
                     兴趣标签
                   </h3>
@@ -270,7 +395,7 @@ const HomePage: React.FC = () => {
           </Card>
 
           {/* 特点 */}
-          <Card className="bg-card/60 backdrop-blur-sm border-border/60">
+          <Card className="bg-card/60 backdrop-blur-sm border-border/60 hover:shadow-md hover:shadow-primary/5 hover:border-primary/20 transition-all">
             <CardContent className="p-5 md:p-6">
               <div className="flex items-start gap-4">
                 <div className="shrink-0 w-10 h-10 rounded-lg bg-accent/40 flex items-center justify-center">
@@ -289,12 +414,17 @@ const HomePage: React.FC = () => {
           </Card>
         </div>
       </section>
-      <Separator className="max-w-3xl mx-auto" />
+
+      <div className="max-w-3xl mx-auto px-4 md:px-6">
+        <Separator />
+      </div>
 
       {/* Projects Section */}
-      <section className="max-w-3xl mx-auto px-4 md:px-6 py-8 md:py-12">
+      <section id="projects" className="max-w-3xl mx-auto px-4 md:px-6 py-8 md:py-12 scroll-mt-20">
         <div className="flex items-center gap-2 mb-6">
-          <FolderOpen className="w-5 h-5 text-primary" />
+          <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+            <FolderOpen className="w-4 h-4 text-primary" />
+          </div>
           <h2 className="text-lg md:text-xl font-semibold text-foreground">作品</h2>
         </div>
 
@@ -304,11 +434,11 @@ const HomePage: React.FC = () => {
             return (
               <Card
                 key={project.id}
-                className="bg-card/60 backdrop-blur-sm border-border/60 hover:border-primary/30 transition-colors"
+                className="bg-card/60 backdrop-blur-sm border-border/60 hover:shadow-lg hover:shadow-primary/5 hover:border-primary/30 transition-all group"
               >
                 <CardContent className="p-5 md:p-6">
                   <div className="flex items-start gap-4">
-                    <div className="shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <div className="shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/15 transition-colors">
                       <Icon className="w-5 h-5 text-primary" />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -316,7 +446,7 @@ const HomePage: React.FC = () => {
                         <h3 className="text-base font-medium text-foreground">
                           {project.name}
                         </h3>
-                        <ExternalLink className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+                        <ExternalLink className="w-3.5 h-3.5 text-muted-foreground shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
                       </div>
                       <p className="text-sm text-muted-foreground text-pretty mb-3">
                         {project.desc}
@@ -341,10 +471,12 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      <Separator className="max-w-3xl mx-auto" />
+      <div className="max-w-3xl mx-auto px-4 md:px-6">
+        <Separator />
+      </div>
 
       {/* Chat Section */}
-      <section id="chat" className="max-w-3xl mx-auto px-4 md:px-6 py-8 md:py-12 pb-16">
+      <section id="chat" className="max-w-3xl mx-auto px-4 md:px-6 py-8 md:py-12 pb-16 scroll-mt-20">
         <div className="flex items-center gap-2 mb-2">
           <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
             <Bot className="w-4 h-4 text-primary" />
@@ -360,7 +492,7 @@ const HomePage: React.FC = () => {
           可以直接在下方输入问题，或点击快捷问题开始对话
         </p>
 
-        <Card className="border-border/60 shadow-sm overflow-hidden">
+        <Card className="border-border/60 shadow-sm overflow-hidden hover:shadow-lg hover:shadow-primary/5 transition-shadow">
           {/* Chat Messages */}
           <div className="bg-muted/30">
             <ScrollArea className="h-[380px] md:h-[420px] px-4 py-4" ref={scrollRef as any}>
@@ -462,16 +594,21 @@ const HomePage: React.FC = () => {
           </div>
         </Card>
       </section>
-      <Separator className="max-w-3xl mx-auto" />
+
+      <div className="max-w-3xl mx-auto px-4 md:px-6">
+        <Separator />
+      </div>
 
       {/* Contact Section */}
-      <section className="max-w-3xl mx-auto px-4 md:px-6 py-8 md:py-12">
+      <section id="contact" className="max-w-3xl mx-auto px-4 md:px-6 py-8 md:py-12 scroll-mt-20">
         <div className="flex items-center gap-2 mb-6">
-          <Mail className="w-5 h-5 text-primary" />
+          <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+            <Mail className="w-4 h-4 text-primary" />
+          </div>
           <h2 className="text-lg md:text-xl font-semibold text-foreground">联系我</h2>
         </div>
 
-        <Card className="bg-card/60 backdrop-blur-sm border-border/60">
+        <Card className="bg-card/60 backdrop-blur-sm border-border/60 hover:shadow-md hover:shadow-primary/5 hover:border-primary/20 transition-all">
           <CardContent className="p-5 md:p-6">
             <p className="text-sm text-muted-foreground text-pretty mb-5">
               如果你对我的项目感兴趣，或者想聊聊技术、AI、钓鱼、骑行，欢迎通过以上方式找到我。
@@ -480,9 +617,9 @@ const HomePage: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-3">
               <a
                 href={`mailto:${CONTACT_INFO.email}`}
-                className="inline-flex items-center gap-3 px-4 py-3 rounded-xl bg-muted/50 hover:bg-muted transition-colors border border-border/40 text-sm"
+                className="inline-flex items-center gap-3 px-4 py-3 rounded-xl bg-muted/50 hover:bg-muted transition-colors border border-border/40 text-sm group"
               >
-                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/15 transition-colors">
                   <Mail className="w-4 h-4 text-primary" />
                 </div>
                 <div className="min-w-0">
@@ -495,9 +632,9 @@ const HomePage: React.FC = () => {
                 href={CONTACT_INFO.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-4 py-3 rounded-xl bg-muted/50 hover:bg-muted transition-colors border border-border/40 text-sm"
+                className="inline-flex items-center gap-3 px-4 py-3 rounded-xl bg-muted/50 hover:bg-muted transition-colors border border-border/40 text-sm group"
               >
-                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/15 transition-colors">
                   <Github className="w-4 h-4 text-primary" />
                 </div>
                 <div className="min-w-0">
@@ -511,11 +648,19 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border/40 bg-muted/20 py-6">
-        <div className="max-w-3xl mx-auto px-4 md:px-6 text-center">
-          <p className="text-sm text-muted-foreground">
-            © 2025 Leavis · 用 AI 搭建的个人主页
-          </p>
+      <footer className="border-t border-border/40 bg-muted/20 py-8">
+        <div className="max-w-3xl mx-auto px-4 md:px-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-3">
+            <p className="text-sm text-muted-foreground">
+              © 2025 Leavis · 用 AI 搭建的个人主页
+            </p>
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              回到顶部
+            </button>
+          </div>
         </div>
       </footer>
     </div>
