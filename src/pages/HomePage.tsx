@@ -6,7 +6,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import {
   Send,
   Bot,
@@ -245,28 +244,41 @@ const HomePage: React.FC = () => {
             ))}
           </nav>
 
-          {/* 移动端菜单 */}
-          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-            <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="icon" className="h-9 w-9">
-                <Menu className="w-5 h-5" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-64 bg-background/95 backdrop-blur-xl border-border/40">
-              <div className="flex flex-col gap-1 mt-6">
-                {NAV_ITEMS.map((item) => (
-                  <SheetClose asChild key={item.href}>
+          {/* 移动端菜单按钮 */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-9 w-9 md:hidden"
+            onClick={() => setMobileOpen(true)}
+            aria-label="打开菜单"
+          >
+            <Menu className="w-5 h-5" />
+          </Button>
+
+          {/* 移动端菜单面板 */}
+          {mobileOpen && (
+            <div className="fixed inset-0 z-[60] md:hidden">
+              {/* 遮罩层 */}
+              <div
+                className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200"
+                onClick={() => setMobileOpen(false)}
+              />
+              {/* 菜单内容 */}
+              <div className="absolute right-0 top-0 bottom-0 w-64 bg-background/95 backdrop-blur-xl border-l border-border/40 animate-in slide-in-from-right duration-300 p-4 pt-14">
+                <div className="flex flex-col gap-1">
+                  {NAV_ITEMS.map((item) => (
                     <button
+                      key={item.href}
                       onClick={() => scrollTo(item.href)}
                       className="w-full text-left px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg transition-colors"
                     >
                       {item.label}
                     </button>
-                  </SheetClose>
-                ))}
+                  ))}
+                </div>
               </div>
-            </SheetContent>
-          </Sheet>
+            </div>
+          )}
         </div>
       </header>
 
