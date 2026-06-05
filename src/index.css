@@ -1,0 +1,101 @@
+/* stylelint-disable */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Morandi color system - low saturation, muted elegance */
+
+@layer base {
+  :root {
+    --radius: 0.75rem;
+    --background: 40 12% 96%;
+    --foreground: 220 10% 22%;
+    --card: 40 10% 94%;
+    --card-foreground: 220 10% 22%;
+    --popover: 40 10% 94%;
+    --popover-foreground: 220 10% 22%;
+    --primary: 200 20% 45%;
+    --primary-foreground: 40 12% 97%;
+    --secondary: 160 12% 88%;
+    --secondary-foreground: 220 10% 22%;
+    --muted: 220 10% 90%;
+    --muted-foreground: 220 8% 50%;
+    --accent: 340 12% 88%;
+    --accent-foreground: 220 10% 22%;
+    --destructive: 0 45% 55%;
+    --border: 220 10% 85%;
+    --input: 220 10% 85%;
+    --ring: 200 20% 45%;
+    --chart-1: 200 20% 45%;
+    --chart-2: 160 15% 50%;
+    --chart-3: 340 15% 55%;
+    --chart-4: 40 20% 60%;
+    --chart-5: 220 15% 55%;
+    --sidebar-background: 40 10% 94%;
+    --sidebar-foreground: 220 10% 22%;
+    --sidebar-primary: 200 20% 45%;
+    --sidebar-primary-foreground: 40 12% 97%;
+    --sidebar-accent: 160 12% 88%;
+    --sidebar-accent-foreground: 220 10% 22%;
+    --sidebar-border: 220 10% 85%;
+    --sidebar-ring: 200 20% 45%;
+    --destructive-foreground: 40 12% 97%;
+  }
+
+  .dark {
+    --background: 220 12% 14%;
+    --foreground: 40 12% 94%;
+    --card: 220 10% 18%;
+    --card-foreground: 40 12% 94%;
+    --popover: 220 10% 18%;
+    --popover-foreground: 40 12% 94%;
+    --primary: 200 18% 55%;
+    --primary-foreground: 220 12% 14%;
+    --secondary: 160 10% 22%;
+    --secondary-foreground: 40 12% 94%;
+    --muted: 220 8% 25%;
+    --muted-foreground: 220 8% 60%;
+    --accent: 340 10% 22%;
+    --accent-foreground: 40 12% 94%;
+    --destructive: 0 40% 45%;
+    --border: 220 8% 28%;
+    --input: 220 8% 28%;
+    --ring: 200 18% 55%;
+    --chart-1: 200 18% 55%;
+    --chart-2: 160 15% 50%;
+    --chart-3: 340 15% 55%;
+    --chart-4: 40 18% 55%;
+    --chart-5: 220 15% 50%;
+    --sidebar-background: 220 10% 16%;
+    --sidebar-foreground: 40 12% 94%;
+    --sidebar-primary: 200 18% 55%;
+    --sidebar-primary-foreground: 220 12% 14%;
+    --sidebar-accent: 160 10% 22%;
+    --sidebar-accent-foreground: 40 12% 94%;
+    --sidebar-border: 220 8% 28%;
+    --sidebar-ring: 200 18% 55%;
+    --destructive-foreground: 40 12% 97%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border)) transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 6px;
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 3px;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
