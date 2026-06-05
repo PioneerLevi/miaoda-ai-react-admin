@@ -43,36 +43,25 @@ interface ChatMessage {
 const AVATAR_URL =
   "https://miaoda-site-img.cdn.bcebos.com/images/MiaoTu_ebf36d2c-0a01-4317-96a2-d3547278ebc6.jpg";
 
-const KNOWLEDGE_BASE = {
-  职业: "我是 Leavis，一名 Java 开发人员。目前正在学习用 AI 辅助写程序，探索技术与创意的结合点。",
-  身份: "我是 Leavis，一名 Java 开发人员。目前正在学习用 AI 辅助写程序，探索技术与创意的结合点。",
-  java: "Java 是我的主力语言，我对后端开发、系统架构比较熟悉。现在也在尝试用 AI 工具来提升开发效率。",
-  开发: "Java 是我的主力语言，我对后端开发、系统架构比较熟悉。现在也在尝试用 AI 工具来提升开发效率。",
-  程序: "Java 是我的主力语言，我对后端开发、系统架构比较熟悉。现在也在尝试用 AI 工具来提升开发效率。",
-  最近: "最近我在搭建自己的个人主页，同时也在整理过去做过的项目和技术路线，想把积累的东西系统化地呈现出来。",
-  现在: "最近我在搭建自己的个人主页，同时也在整理过去做过的项目和技术路线，想把积累的东西系统化地呈现出来。",
-  做什么: "最近我在搭建自己的个人主页，同时也在整理过去做过的项目和技术路线，想把积累的东西系统化地呈现出来。",
-  主页: "最近我在搭建自己的个人主页，同时也在整理过去做过的项目和技术路线，想把积累的东西系统化地呈现出来。",
-  作品: "目前我正在整理自己的作品集和技术路线，准备在这个主页上陆续展示出来。如果你感兴趣，可以先通过聊天问我具体细节。",
-  项目: "目前我正在整理自己的作品集和技术路线，准备在这个主页上陆续展示出来。如果你感兴趣，可以先通过聊天问我具体细节。",
-  擅长: "我比较关心内容表达、AI 应用和知识整理这几个方向。喜欢把复杂的东西梳理清楚，也热衷于用技术解决实际问题。",
-  关心: "我比较关心内容表达、AI 应用和知识整理这几个方向。喜欢把复杂的东西梳理清楚，也热衷于用技术解决实际问题。",
-  方向: "我比较关心内容表达、AI 应用和知识整理这几个方向。喜欢把复杂的东西梳理清楚，也热衷于用技术解决实际问题。",
-  ai: "AI 是我现在非常关注的领域，不仅在用 AI 辅助编程，也在探索如何把 AI 能力融入到日常工作和创作中。",
-  应用: "AI 是我现在非常关注的领域，不仅在用 AI 辅助编程，也在探索如何把 AI 能力融入到日常工作和创作中。",
-  知识: "我喜欢做知识整理，把零散的信息结构化，让复杂的东西变得清晰可读。这也是我搭建个人主页的初衷之一。",
-  整理: "我喜欢做知识整理，把零散的信息结构化，让复杂的东西变得清晰可读。这也是我搭建个人主页的初衷之一。",
-  联系: "你可以通过这个聊天窗口直接和我交流，我会通过数字分身回复你。如果有更深入的合作意向，可以在这里留言。",
-  你好: "你好！我是 Leavis 的数字分身，很高兴认识你。你可以问我关于我的职业、兴趣、最近在做什么，或者任何你想了解的问题。",
-  兴趣: "我的兴趣比较多元：AI 应用、Java 开发、钓鱼和骑行。钓鱼让我学会耐心，骑行让我保持活力，技术和创作则让我持续成长。",
-  爱好: "我的兴趣比较多元：AI 应用、Java 开发、钓鱼和骑行。钓鱼让我学会耐心，骑行让我保持活力，技术和创作则让我持续成长。",
-  钓鱼: "钓鱼是我放松的方式之一。在水边坐着，等待的过程本身就是一种修行，能帮我理清很多思路。",
-  骑行: "骑行是我保持活力的方式。喜欢在山路上骑行，感受风的速度，这时候头脑往往特别清晰。",
-  特点: "我特别喜欢抽象的概念，喜欢把复杂的事情拆解、归类、找到本质。性格偏内向，更倾向于深度交流而非浅层社交。",
-  性格: "我特别喜欢抽象的概念，喜欢把复杂的事情拆解、归类、找到本质。性格偏内向，更倾向于深度交流而非浅层社交。",
-  内向: "没错，我是个内向的人。虽然不擅长在人群中表达，但在熟悉的环境或感兴趣的话题上，我可以聊很久。",
-  抽象: "抽象概念对我有特别的吸引力。无论是编程中的设计模式，还是哲学中的逻辑结构，我都喜欢去探究它们背后的统一规律。",
-};
+const SYSTEM_PROMPT = `你是 Leavis 的数字分身。你的任务是代表 Leavis 与访客交流，回答关于他的一切问题。
+
+关于 Leavis 的基本信息：
+- 职业：Java 开发人员，目前在学习用 AI 辅助写程序
+- 兴趣：AI 应用、Java 开发、钓鱼、骑行
+- 最近在做的事情：搭建个人主页，整理过去做过的项目和技术路线
+- 项目作品：
+  1. 个人主页 — React + Tailwind + shadcn/ui 搭建的响应式主页
+  2. 后端服务框架 — 基于 Spring Boot 的微服务基础框架
+  3. AI 辅助工具集 — 探索用 AI 提升开发效率的小工具
+- 联系方式：邮箱 leavis@example.com、GitHub @leavis
+- 性格：喜欢抽象概念，偏内向，在熟悉环境或感兴趣话题上可以聊很久
+- 特点：喜欢把复杂的事情拆解、归类、找到本质
+
+回复要求：
+1. 用第一人称"我"来回答
+2. 语气自然、亲切，不要太官方
+3. 如果不确定的问题，坦诚说明，不要编造
+4. 可以主动分享一些见解和想法`;
 
 const SUGGESTED_QUESTIONS = [
   "你现在在做什么？",
@@ -110,16 +99,6 @@ const CONTACT_INFO = {
   wechat: "leavis_dev",
 };
 
-function getBotReply(input: string): string {
-  const lowerInput = input.toLowerCase();
-  for (const [keyword, reply] of Object.entries(KNOWLEDGE_BASE)) {
-    if (lowerInput.includes(keyword)) {
-      return reply;
-    }
-  }
-  return "这个问题我暂时无法回答，你可以尝试问我：我在做什么、我的作品、怎么联系我，或者其他关于我的事情。";
-}
-
 const HomePage: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -140,9 +119,18 @@ const HomePage: React.FC = () => {
     }
   }, [messages, isTyping]);
 
+  const abortRef = useRef<AbortController | null>(null);
+
   const handleSend = async (text: string) => {
     const trimmed = text.trim();
     if (!trimmed) return;
+
+    // 如果正在生成，先中断
+    if (abortRef.current) {
+      abortRef.current.abort();
+      abortRef.current = null;
+      setIsTyping(false);
+    }
 
     const userMsg: ChatMessage = {
       id: Date.now().toString(),
@@ -151,28 +139,97 @@ const HomePage: React.FC = () => {
       timestamp: new Date(),
     };
 
-    setMessages((prev) => [...prev, userMsg]);
-    setInputValue("");
-    setIsTyping(true);
+    // 构建历史消息（前端消息只有 user/assistant）
+    const historyMessages = messages.map((m) => ({
+      role: m.role,
+      content: m.content,
+    }));
 
-    // 模拟打字延迟
-    await new Promise((resolve) => setTimeout(resolve, 600 + Math.random() * 400));
+    const apiMessages = [
+      { role: "system", content: SYSTEM_PROMPT },
+      ...historyMessages,
+      { role: "user", content: trimmed },
+    ];
 
-    const reply = getBotReply(trimmed);
+    const botId = (Date.now() + 1).toString();
     const botMsg: ChatMessage = {
-      id: (Date.now() + 1).toString(),
+      id: botId,
       role: "assistant",
-      content: reply,
+      content: "",
       timestamp: new Date(),
     };
 
-    setIsTyping(false);
-    setMessages((prev) => [...prev, botMsg]);
+    setMessages((prev) => [...prev, userMsg, botMsg]);
+    setInputValue("");
+    setIsTyping(true);
+
+    abortRef.current = new AbortController();
+
+    try {
+      const { sendChatStream } = await import("@/lib/chat-stream");
+      await sendChatStream({
+        messages: apiMessages,
+        onChunk: (delta) => {
+          setMessages((prev) => {
+            const last = prev[prev.length - 1];
+            if (last && last.id === botId && last.role === "assistant") {
+              return [
+                ...prev.slice(0, -1),
+                { ...last, content: last.content + delta },
+              ];
+            }
+            return prev;
+          });
+        },
+        onComplete: () => {
+          setIsTyping(false);
+          abortRef.current = null;
+        },
+        onError: (error) => {
+          console.error("聊天流式请求出错:", error);
+          setMessages((prev) => {
+            const last = prev[prev.length - 1];
+            if (last && last.id === botId && last.role === "assistant" && !last.content) {
+              return [
+                ...prev.slice(0, -1),
+                { ...last, content: "抱歉，连接出了点问题，请稍后再试。" },
+              ];
+            }
+            return prev;
+          });
+          setIsTyping(false);
+          abortRef.current = null;
+        },
+        signal: abortRef.current.signal,
+      });
+    } catch (error) {
+      console.error("调用聊天流失败:", error);
+      setMessages((prev) => {
+        const last = prev[prev.length - 1];
+        if (last && last.id === botId && last.role === "assistant" && !last.content) {
+          return [
+            ...prev.slice(0, -1),
+            { ...last, content: "抱歉，连接出了点问题，请稍后再试。" },
+          ];
+        }
+        return prev;
+      });
+      setIsTyping(false);
+      abortRef.current = null;
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     handleSend(inputValue);
+  };
+
+  const handleStop = () => {
+    if (abortRef.current) {
+      abortRef.current.abort();
+      abortRef.current = null;
+      setIsTyping(false);
+    }
   };
 
   const NAV_ITEMS = [
@@ -588,20 +645,33 @@ const HomePage: React.FC = () => {
               className="flex items-center gap-2"
             >
               <Input
-                placeholder="输入你想问的问题..."
+                placeholder={isTyping ? "数字分身正在思考..." : "输入你想问的问题..."}
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 className="flex-1 h-10 md:h-11 bg-muted/50 border-border/60 focus-visible:ring-primary/30"
                 disabled={isTyping}
               />
-              <Button
-                type="submit"
-                size="icon"
-                className="h-10 w-10 md:h-11 md:w-11 shrink-0 rounded-xl"
-                disabled={isTyping || !inputValue.trim()}
-              >
-                <Send className="w-4 h-4" />
-              </Button>
+              {isTyping ? (
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="icon"
+                  className="h-10 w-10 md:h-11 md:w-11 shrink-0 rounded-xl"
+                  onClick={handleStop}
+                  title="停止生成"
+                >
+                  <Square className="w-4 h-4 fill-current" />
+                </Button>
+              ) : (
+                <Button
+                  type="submit"
+                  size="icon"
+                  className="h-10 w-10 md:h-11 md:w-11 shrink-0 rounded-xl"
+                  disabled={!inputValue.trim()}
+                >
+                  <Send className="w-4 h-4" />
+                </Button>
+              )}
             </form>
           </div>
         </Card>
